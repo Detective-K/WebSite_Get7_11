@@ -1,0 +1,6 @@
+https://blog.gtwang.org/web-development/chrome-configuration-for-access-control-allow-origin/
+
+"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --user-data-dir="C:/Chrome dev session2" --disable-web-security
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --user-data-dir="C:/Chrome dev session2" --disable-web-security
+
+file:///D:/d02044%E4%BD%BF%E7%94%A8/test%20web/%E4%B8%BB%E6%A9%9F%E7%89%88%E6%9C%AC/WebOrder_JunctionPlate/PlateService.html
