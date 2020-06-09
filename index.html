@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+
     <script src="jquery-3.5.0.min.js" type="text/javascript"></script>
 
     <meta charset="UTF-8">
@@ -12,9 +13,8 @@
     <table id="tbl_data">
     </table>
 
-
     <script type="text/javascript">
-        $(function () {
+        $(function() {
             var objjson = {};
             objjson["台北市"] = ['中正區', '大同區', '中山區', '松山區', '大安區', '萬華區', '信義區', '士林區', '北投區', '內湖區', '南港區', '文山區'];
             objjson["新北市"] = [
@@ -32,19 +32,22 @@
                 '大社區', '岡山區', '路竹區', '阿蓮區', '田寮區', '燕巢區', '橋頭區', '梓官區', '彌陀區', '永安區', '湖內區', '鳳山區', '大寮區',
                 '林園區', '鳥松區', '大樹區', '旗山區', '美濃區', '六龜區', '內門區', '杉林區', '甲仙區', '桃源區', '那瑪夏區', '茂林區', '茄萣區'
             ];
-            $("#btn_Send").click(function () {
+            $("#btn_Send").click(function() {
                 $('#tbl_data').html('');
-                $.each(objjson[txt_city.value], function (index, value) {
-	            $.support.cors = true;
+                $.each(objjson[txt_city.value], function(index, value) {
+                    $.support.cors = true;
                     $.ajax({
                         url: "https://emap.pcsc.com.tw/EMapSDK.aspx?city=" + txt_city.value + "&town=" + value + "&commandid=SearchStore",
                         dataType: 'xml'
-                    }).then(function (e) {
+                    }).then(function(e) {
                         $xml = $(e);
-                        $xml.find("GeoPosition").each(function (i) {
+                        $xml.find("GeoPosition").each(function(i) {
                             str = "<tr>";
                             str += "<td>" + $(this).children("POIName").text() + "</td>";
                             str += "<td>" + $(this).children("Address").text() + "</td>";
+                            str += "<td>" + replaceY($(this).children("Y").text() ) + "</td>";
+                            str += "<td>" + replaceX( $(this).children("X").text()) + "</td>";
+                            str += "<td>" + replaceY($(this).children("Y").text() ) +"," + replaceX( $(this).children("X").text()) + "</td>";
                             str += "</tr>";
                             $('#tbl_data').append(str);
                         });
@@ -53,6 +56,58 @@
 
             });
         });
+        
+        const replaceY = (val) =>{
+             let tmpVal;
+             let newVal = "";
+             tmpVal = val.replace(".", "");
+             if(tmpVal.length >= 8)
+             {
+             tmpVal = tmpVal.substr(0,8);
+                    for (let i = 0 ; i < tmpVal.length ; i++ )
+                    {
+                      if(i  == 1)
+                      {
+                       newVal +=  tmpVal.substr(i,1)  +"." ;
+                      }
+                      else{
+                        newVal +=  tmpVal.substr(i,1) ;
+                      }
+                    }
+                
+         
+             }
+             else{
+                  newVal = tmpVal;
+             }
+             return newVal;
+        }
+        const replaceX = (val) =>{
+             let tmpVal;
+             let newVal = "";
+             tmpVal = val.replace(".", "");
+             if(tmpVal.length >= 9)
+             {
+              tmpVal = tmpVal.substr(0,9);
+                    for (let i = 0 ; i < tmpVal.length ; i++ )
+                    {
+                      if(i  == 2)
+                      {
+                       newVal +=  tmpVal.substr(i,1)  +"." ;
+                      }
+                      else{
+                        newVal +=  tmpVal.substr(i,1) ;
+                      }
+                    }
+                
+         
+             }
+             else{
+                  newVal = tmpVal;
+             }
+             return newVal;
+        }
     </script>
+
 </body>
 </html>
