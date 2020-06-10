@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>輸入地址批次轉換經緯度小工具</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <script>
+            var i;
+            var split;
+
+            function trans() {
+                i = 0;
+                $("#target").val("");
+                var content = $("#source").val();
+                split = content.split("\n");
+                delayedLoop();
+            }
+
+            function delayedLoop() {
+                addressToLatLng(split[i]);
+                if (++i == split.length) {
+                    return;
+                }
+                window.setTimeout(delayedLoop, 3000);
+            }
+
+            function addressToLatLng(addr) {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({
+                    "address": addr
+                }, function (results, status) {
+					if ($("#c").attr('checked'))
+					{
+						addr = addr + "=";
+					}
+					else {
+						addr = "";
+					}
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var content = $("#target").val();
+                        $("#target").val(content + addr + results[0].geometry.location.lat() + "," + results[0].geometry.location.lng() + "\n");
+                    }
+					else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+						alert("您輸入的地址可能不存在!\nThis may occur if the geocoder was passed a non-existent address.");					
+					}
+					else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+						alert("經緯度查詢已超過免費配額，明日請早!\nSorry! We are over our quota.");					
+					}
+					else if (status == google.maps.GeocoderStatus.REQUEST_DENIED) {
+						alert("請求被拒絕!\nYour request was denied.");					
+					}
+					else {
+                        var content = $("#target").val();
+                        $("#target").val(content + addr + "查無經緯度，或系統發生錯誤！" + "\n");
+                    }
+                });
+            }
+        </script>
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<!-- gps.uhooamber.com -->
+		<ins class="adsbygoogle"
+			 style="display:inline-block;width:468px;height:60px"
+			 data-ad-client="ca-pub-5510330401766007"
+			 data-ad-slot="6752942307"></ins>
+		<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+    </head>
+    
+    <body>
+		<p>1. 請輸入地址，一行輸入一個地址</p>
+		<p>
+			<textarea rows="6" name="S1" cols="67" id="source">台北市信義區市府路1號</textarea>
+		</p>
+		<p>2. 請選擇輸出要不要加入地址? <input type="checkbox" id="c" name="c" value="ON">加上</p>
+		<p>
+			3. 點選 <input type="button" value="開始轉換" name="B1" onclick="trans();">
+		</p>
+		<p>4. 地址轉換經緯度結果如下 (格式：Latitude,Longitude)</p>
+		<p>
+			<textarea rows="6" name="S2" cols="67" id="target"></textarea>
+		</p>
+		<p style="color: #FF0000">
+			由於本工具沒交保護費給 Google，每月僅能使用 40,000 次查詢，故實施每日配額限制，若當日已無法使用，明日請早！
+		</p>
+		<p>
+			本工具由 <a href="http://uhooamber.com/">李小淮</a> 開發與維護，如有使用上問題與意見反應或批評指教，請聯繫 uhoolee@hotmail.com，謝謝。
+		</p>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCH2xFI3Kt1dGQyqoohrUxdPsCkFnUE8JQ" type="text/javascript"></script>
+	</body>
+</html>
