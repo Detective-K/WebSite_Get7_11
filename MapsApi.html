@@ -20,7 +20,7 @@
                 if (++i == split.length) {
                     return;
                 }
-                window.setTimeout(delayedLoop, 3000);
+                window.setTimeout(delayedLoop, 1500);
             }
 
             function addressToLatLng(addr) {
@@ -40,13 +40,13 @@
                         $("#target").val(content + addr + results[0].geometry.location.lat() + "," + results[0].geometry.location.lng() + "\n");
                     }
 					else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-						alert("您輸入的地址可能不存在!\nThis may occur if the geocoder was passed a non-existent address.");					
+						//alert("您輸入的地址可能不存在!\nThis may occur if the geocoder was passed a non-existent address.");					
 					}
 					else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-						alert("經緯度查詢已超過免費配額，明日請早!\nSorry! We are over our quota.");					
+						//alert("經緯度查詢已超過免費配額，明日請早!\nSorry! We are over our quota.");					
 					}
 					else if (status == google.maps.GeocoderStatus.REQUEST_DENIED) {
-						alert("請求被拒絕!\nYour request was denied.");					
+						//alert("請求被拒絕!\nYour request was denied.");					
 					}
 					else {
                         var content = $("#target").val();

@@ -6,3 +6,15 @@ https://blog.gtwang.org/web-development/chrome-configuration-for-access-control-
 file:///D:/d02044%E4%BD%BF%E7%94%A8/test%20web/%E4%B8%BB%E6%A9%9F%E7%89%88%E6%9C%AC/WebOrder_JunctionPlate/PlateService.html
 
 AIzaSyCH2xFI3Kt1dGQyqoohrUxdPsCkFnUE8JQ
+
+Sub func()
+For j = 2 To 26289
+    For i = 2 To 439
+     If Range("B" & j).Value = Split(Range("G" & i).Value, "=")(0) Then
+        Range("H" & j).Value = Split(Range("G" & i).Value, "=")(0)
+     Else
+       Range("I" & j).Value = Range("B" & j).Value
+     End If
+    Next
+Next
+End Sub
