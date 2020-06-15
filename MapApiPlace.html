@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>輸入地址批次轉換經緯度小工具</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <script>
+            var i;
+            var split;
+
+            function trans() {
+                i = 0;
+                $("#target").val("");
+                var content = $("#source").val();
+                split = content.split("\n");
+                delayedLoop();
+            }
+
+            function delayedLoop() {
+                addressToLatLng(split[i]);
+                if (++i == split.length) {
+                    return;
+                }
+                window.setTimeout(delayedLoop, 1500);
+            }
+
+            function addressToLatLng(addr) {
+     //           var geocoder = new google.maps.Geocoder();
+     //           geocoder.geocode({
+     //               "address": addr
+     //           }, function (results, status) {
+					//if ($("#c").attr('checked'))
+					//{
+					//	addr = addr + "=";
+					//}
+					//else {
+					//	addr = "";
+					//}
+     //               if (status == google.maps.GeocoderStatus.OK) {
+     //                   var content = $("#target").val();
+     //                   $("#target").val(content + addr + results[0].geometry.location.lat() + "," + results[0].geometry.location.lng() + "\n");
+     //               }
+					//else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+					//	alert("您輸入的地址可能不存在!\nThis may occur if the geocoder was passed a non-existent address.");					
+					//}
+					//else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+					//	alert("經緯度查詢已超過免費配額，明日請早!\nSorry! We are over our quota.");					
+					//}
+					//else if (status == google.maps.GeocoderStatus.REQUEST_DENIED) {
+					//	alert("請求被拒絕!\nYour request was denied.");					
+					//}
+					//else {
+     //                   var content = $("#target").val();
+     //                   $("#target").val(content + addr + "查無經緯度，或系統發生錯誤！" + "\n");
+     //               }
+                //           });
+                $.ajax({
+                url: "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + addr + "&key=AIzaSyCH2xFI3Kt1dGQyqoohrUxdPsCkFnUE8JQ",
+                dataType: 'JSON',
+                    async: false
+                }).then(function (e) {
+					if ($("#c").attr('checked'))
+					{
+						addr = addr + "=";
+					}
+					else {
+						addr = "";
+					}
+					var content = $("#target").val();
+                    if (e.status =="OK") {
+                        $("#target").val(content + addr + e.results[0].rating + "," + e.results[0].user_ratings_total + "\n");
+					}
+              
+                    });
+            }
+        </script>
+<!--		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
+		<!-- gps.uhooamber.com -->
+<!--		<ins class="adsbygoogle"
+			 style="display:inline-block;width:468px;height:60px"
+			 data-ad-client="ca-pub-5510330401766007"
+			 data-ad-slot="6752942307"></ins>
+		<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>-->
+    </head>
+    
+    <body>
+		<p>1. 請輸入地址，一行輸入一個店家名稱</p>
+		<p>
+			<textarea rows="6" name="S1" cols="67" id="source">新光三越台中中港店</textarea>
+		</p>
+		<p>2. 請選擇輸出要不要加入店家名稱? <input type="checkbox" id="c" name="c" value="ON">加上</p>
+		<p>
+			3. 點選 <input type="button" value="開始轉換" name="B1" onclick="trans();">
+		</p>
+		<p>4. 評分及評論數結果如下 (格式：評分,評論數)</p>
+		<p>
+			<textarea rows="6" name="S2" cols="67" id="target"></textarea>
+		</p>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+	</body>
+</html>
